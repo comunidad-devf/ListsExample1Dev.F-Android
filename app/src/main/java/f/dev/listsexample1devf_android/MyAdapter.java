@@ -20,8 +20,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyAdapter extends ArrayAdapter<GuestModel> {
 
     private List<GuestModel> guestModels;
-
-
     private LayoutInflater inflater;
 
 
