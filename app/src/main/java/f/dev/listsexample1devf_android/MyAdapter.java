@@ -1,6 +1,7 @@
 package f.dev.listsexample1devf_android;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +19,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MyAdapter extends ArrayAdapter<GuestModel> {
 
-    List<GuestModel> guestModels;
+    private List<GuestModel> guestModels;
 
 
     private LayoutInflater inflater;
-
-    @Bind(R.id.textViewNamgGuest)
-    TextView myTeextView;
-
-    @Bind(R.id.imageViewGuest)
-    CircleImageView myCircleImageView;
-
 
 
     public MyAdapter(Context context, int resource, List<GuestModel> guestModels) {
@@ -43,24 +37,47 @@ public class MyAdapter extends ArrayAdapter<GuestModel> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View viewItem = inflater.inflate(R.layout.item_guest, parent, false);
-        ButterKnife.bind(this, viewItem);
+        View viewItem;
+        ViewHolder viewHolder;
 
-        setData(guestModels.get(position));
+        if (convertView == null) {
+            viewItem = inflater.inflate(R.layout.item_guest, parent, false);
+            viewHolder = new ViewHolder(viewItem);
+            viewItem.setTag(viewHolder);
+
+            viewItem.setBackgroundColor(Color.BLUE);
+        } else {
+            viewItem = convertView;
+            viewHolder = (ViewHolder) viewItem.getTag();
+            viewItem.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        GuestModel guestModel = guestModels.get(position);
+
+        viewHolder.setData(guestModel);
 
         return viewItem;
     }
 
 
-    private void setData (GuestModel guestModel)
-    {
-        myTeextView.setText(guestModel.getIdName());
-        myCircleImageView.setImageResource(guestModel.getIdImage());
+    public class ViewHolder {
+
+        @Bind(R.id.textViewNamgGuest)
+        TextView myTeextView;
+
+        @Bind(R.id.imageViewGuest)
+        CircleImageView myCircleImageView;
+
+        public ViewHolder(View viewItem) {
+            ButterKnife.bind(this, viewItem);
+        }
+
+
+        public void setData(GuestModel guestModel) {
+            myTeextView.setText(guestModel.getIdName());
+            myCircleImageView.setImageResource(guestModel.getIdImage());
+        }
+
     }
-
-
-
-
-
 
 }
